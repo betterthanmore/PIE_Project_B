@@ -24,6 +24,8 @@ public class Slot : MonoBehaviour
 
     public void CreateItem(int id)
     {
+        string itemPath = "Prefabs/Item_" + id.ToString("00");
+        var itemGo = (GameObject)Instantiate(Resources.Load(itemPath));
 
     }
 }
