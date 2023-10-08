@@ -5,7 +5,12 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public int id;
-    public Slot slot;
+    public Slot parentSlot;
 
-    
+
+    public void Init(int id, Slot slot)
+    {
+        this.id = id;
+        this.parentSlot = slot;
+    }
 }
