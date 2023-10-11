@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
+    
+
     public enum SLOTSTATE                                                    //슬롯 상태값
     {
         EMPTY,
@@ -13,6 +15,19 @@ public class Slot : MonoBehaviour
     public int id;                                                           //슬롯 번호 ID
     public Item itemObject;
     public SLOTSTATE state = SLOTSTATE.EMPTY;                                //enum값을 선언
+
+    public void GetSlotId(int id)
+    {
+        int x = id % 10;
+        int y = id / 10;
+    }
+
+
+    
+    
+
+    
+    
     private void ChangeStateTo(SLOTSTATE targetState)
     {
         state = targetState;                                                 //해당 슬롯의 상태값을 변환시켜주는 함수

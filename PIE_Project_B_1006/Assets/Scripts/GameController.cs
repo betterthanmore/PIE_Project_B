@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
 
     private Vector3 _target;
     private ItemInfo carryingItem;               //들고있는 아이템 정보 관리
+    
 
     private Dictionary<int, Slot> slotDictionary;  //슬롯id,클래스 관리하기 위한 자료구조
 
@@ -46,6 +47,8 @@ public class GameController : MonoBehaviour
 
     }
 
+   
+
     void SendRayCast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -53,9 +56,14 @@ public class GameController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit) )
         {
+            
             var slot = hit.transform.GetComponent<Slot>(); //레이케스트를 통해 나온 슬롯 칸
+            
+            
+            
             if(slot.state == Slot.SLOTSTATE.FULL && carryingItem == null)
             {
+                
                 //선택한 슬롯에서 아이템을 잡는다.
                 string itemPath = "Prefabs/Item_Grabbed_" + slot.itemObject.id.ToString("000"); //?
                 var itemGo = (GameObject)Instantiate(Resources.Load(itemPath)); //아이템 생성
@@ -64,26 +72,43 @@ public class GameController : MonoBehaviour
                 itemGo.transform.localScale = Vector3.one * 2;
 
                 carryingItem = itemGo.GetComponent<ItemInfo>();                 
-                carryingItem = InitDummy(slot.id, slot.itemObject.id);
+                carryingItem.InitDummy(slot.id, slot.itemObject.id);
 
                 slot.Grabbed();
             }
             else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
             {
+                int slotNumToMoveX = this.gameObject.GetComponent<ItemInfo>().slotId ;
+                int slotNumToMoveY = this.gameObject.GetComponent<ItemInfo>().slotId ;
+
+                if((slotNumToMoveY +9)/9 != 0 || (slotNumToMoveY + 9) / 9 != 0)
+                {
+                    OnItemCarryFail();
+                }
+                else if(slotNumToMoveX )
+                {
+
+                }
+                
                 slot.CreateItem(carryingItem.itemId);
                 Destroy(carryingItem.gameObject);
+                
+                carryingItem.GetComponent<Item>().move -= 1;
+
             }
             else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
             {
                 if(slot.itemObject.id == carryingItem.itemId) 
                 {
                     OnItemMergedWithTarget(slot.id);            //오브젝트 병합 함수 호출
+
                 }
                 else
                 {
                     OnItemCarryFail();      //배치실패
                 }
             }
+            
         }
         else
         {

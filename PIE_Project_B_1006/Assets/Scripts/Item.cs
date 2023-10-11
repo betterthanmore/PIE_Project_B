@@ -6,6 +6,8 @@ public class Item : MonoBehaviour
 {
     public int id;
     public Slot parentSlot;
+    public int move = 15;
+
 
 
     public void Init(int id, Slot slot)

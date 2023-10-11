@@ -7,10 +7,13 @@ public class ItemInfo : MonoBehaviour
     public int slotId;                    //슬롯
     public int itemId;                    //아이템
 
+   
+
 
     public void InitDummy(int slotId, int itemId)
     {//인수로 받은 값들을 클래스에 입력
         this.slotId = slotId;
         this.itemId = itemId;
+        
     }
 }
