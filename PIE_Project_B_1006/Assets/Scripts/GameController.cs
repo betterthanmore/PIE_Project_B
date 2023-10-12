@@ -81,11 +81,11 @@ public class GameController : MonoBehaviour
                 int slotNumToMoveX = this.gameObject.GetComponent<ItemInfo>().slotId ;
                 int slotNumToMoveY = this.gameObject.GetComponent<ItemInfo>().slotId ;
 
-                if((slotNumToMoveY +9)/9 != 0 || (slotNumToMoveY + 9) / 9 != 0)
+                if((slotNumToMoveY -9)/9 != 0 || (slotNumToMoveY + 9) / 9 != 0)
                 {
                     OnItemCarryFail();
                 }
-                else if(slotNumToMoveX )
+                else if( )
                 {
 
                 }
