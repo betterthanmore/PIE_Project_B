@@ -1,148 +1,207 @@
-using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class GameController : MonoBehaviour
 {
-    public Slot[] slots;                        //슬롯 배열 관리
+    public Slot[] slots;                                //게임 컴트롤러에서는 Slot 배열을 관리
 
     private Vector3 _target;
-    private ItemInfo carryingItem;               //들고있는 아이템 정보 관리
-    
+    private ItemInfo carryingItem;                      //잡고 있는 아이템 정보 값 관리
 
-    private Dictionary<int, Slot> slotDictionary;  //슬롯id,클래스 관리하기 위한 자료구조
+    private Dictionary<int, Slot> slotDictionary;       //Slot id, Slot class 관리하기 위한 자료구조
+
+    public int stage;
+
+
 
     private void Start()
     {
-        slotDictionary = new Dictionary<int, Slot>(); //초기화 >> 이해 안됨
+        slotDictionary = new Dictionary<int, Slot>();   //초기화
 
-        for(int i  = 0; i < slots.Length; i++)
-        {//각 슬롯의 아이디를 설정하고 딕셔너리에 추가
+        for (int i = 0; i < slots.Length; i++)
+        {                                               //각 슬롯의 ID를 설정하고 딕셔너리에 추가
             slots[i].id = i;
             slotDictionary.Add(i, slots[i]);
         }
-    }
 
+        PlaceItem(1, 1);
+        PlaceItem(3, 1);
+        PlaceItem(3, 2, 3);
+    }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))             //마우스 누를 떄
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlaceRandomItem();
+        }
+
+        if (Input.GetMouseButtonDown(0)) //마우스 누를 때
         {
             SendRayCast();
         }
 
-        if (Input.GetMouseButton(0) && carryingItem)      //잡고 이동시킬 때
+        if (Input.GetMouseButton(0) && carryingItem)    //잡고 이동시킬 때
+        {
+            OnItemSelected();
+        }
+
+        if (Input.GetMouseButtonUp(0))  //마우스 버튼을 놓을때
         {
             SendRayCast();
         }
-
-        if (Input.GetMouseButtonUp(0))       //마우스 버튼을 놓을때
-        {
-            SendRayCast();
-        }
-
     }
-
-   
-
     void SendRayCast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit) )
+        if (Physics.Raycast(ray, out hit))
         {
-            
-            var slot = hit.transform.GetComponent<Slot>(); //레이케스트를 통해 나온 슬롯 칸
-            
-            
-            
-            if(slot.state == Slot.SLOTSTATE.FULL && carryingItem == null)
+            var slot = hit.transform.GetComponent<Slot>();          //Raycast를 통해 나온 Slot칸
+            if (slot.state == Slot.SLOTSTATE.FULL && carryingItem == null)
             {
-                
-                //선택한 슬롯에서 아이템을 잡는다.
-                string itemPath = "Prefabs/Item_Grabbed_" + slot.itemObject.id.ToString("000"); //?
-                var itemGo = (GameObject)Instantiate(Resources.Load(itemPath)); //아이템 생성
+                string itemPath = "Prefabs/Item_Grabbed_" + slot.itemObject.id.ToString("000");
+                var itemGo = (GameObject)Instantiate(Resources.Load(itemPath));     //아이템 생성
+
                 itemGo.transform.SetParent(this.transform);
                 itemGo.transform.localPosition = Vector3.zero;
                 itemGo.transform.localScale = Vector3.one * 2;
 
-                carryingItem = itemGo.GetComponent<ItemInfo>();                 
-                carryingItem.InitDummy(slot.id, slot.itemObject.id);
+                carryingItem = itemGo.GetComponent<ItemInfo>();         //슬롯 정보 입력
+                carryingItem.InitDummy(slot.id, slot.itemObject.id, slot.x, slot.y);
 
-                slot.Grabbed();
+                slot.ItemGrabbed();
             }
-            else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
-            {
-                int slotNumToMoveX = this.gameObject.GetComponent<ItemInfo>().slotId ;
-                int slotNumToMoveY = this.gameObject.GetComponent<ItemInfo>().slotId ;
-
-                if((slotNumToMoveY -9)/9 != 0 || (slotNumToMoveY + 9) / 9 != 0)
+            else if (slot.state == Slot.SLOTSTATE.EMPTY && carryingItem != null)
+            {//빈 슬롯에 아이템 배치
+                if ((carryingItem.slotX == slot.x || carryingItem.slotY == slot.y) && !(carryingItem.slotX == slot.x && carryingItem.slotY == slot.y))
                 {
-                    OnItemCarryFail();
-                }
-                else if( )
-                {
-
-                }
-                
-                slot.CreateItem(carryingItem.itemId);
-                Destroy(carryingItem.gameObject);
-                
-                carryingItem.GetComponent<Item>().move -= 1;
-
-            }
-            else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
-            {
-                if(slot.itemObject.id == carryingItem.itemId) 
-                {
-                    OnItemMergedWithTarget(slot.id);            //오브젝트 병합 함수 호출
-
+                    if(GameManager.Instance.stages[stage].moveAmount > 0)
+                    {
+                        slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
+                        Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
+                        GameManager.Instance.stages[stage].moveAmount--;
+                    }
+                    else
+                    {
+                        GameOver();                             // 게임 오버 함수 호출
+                    }
                 }
                 else
                 {
-                    OnItemCarryFail();      //배치실패
+                    OnItemCarryFail();  //아이템 배치 실패
                 }
             }
-            
+            else if (slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
+            {//Checking 후 병합
+                if (slot.itemObject.id == carryingItem.itemId)
+                {
+                    if (GameManager.Instance.stages[stage].moveAmount > 0)
+                    {
+                        OnItemMergedWithTarget(slot.id);    //병합 함수 호출
+                        GameManager.Instance.stages[stage].moveAmount--;
+                    }
+                    else
+                    {
+                        GameOver();                             // 게임 오버 함수 호출
+                    }
+                }
+                else
+                {
+                    OnItemCarryFail();  //아이템 배치 실패
+                }
+            }
         }
         else
         {
             if (!carryingItem) return;
-            OnItemCarryFail();
+            OnItemCarryFail();  //아이템 배치 실패
         }
-    }
-
-    void OnItemMergedWithTarget(int targetSlotId)
-    {//병합 함수
-        var slot = GetSlotById(targetSlotId);
-        Destroy(slot.itemObject.gameObject);
-        slot.CreateItem(carryingItem.itemId + 1);
-        Destroy(carryingItem.gameObject);
 
     }
+
 
     void OnItemSelected()
-    {//아이템을 선택하고 아이템을 마우스 위치로 이동시키는 함수
-        _target = Camera.main.ScreenToWorldPoint(Input.mousePosition);      //좌표변환
+    {   //아이템을 선택하고 마우스 위치로 이동 
+        _target = Camera.main.ScreenToWorldPoint(Input.mousePosition);  //좌표변환
         _target.z = 0;
         var delta = 10 * Time.deltaTime;
         delta *= Vector3.Distance(transform.position, _target);
         carryingItem.transform.position = Vector3.MoveTowards(carryingItem.transform.position, _target, delta);
     }
-    void OnItemCarryFail()
-    {      //아이템 배치 실패
-        var slot = GetSlotById(carryingItem.slotId);
-        slot.CreateItem(carryingItem.itemId);
-        Destroy(carryingItem.gameObject);
-    }    
 
-    Slot GetSlotById(int id)
+    void OnItemMergedWithTarget(int targetSlotId)
     {
+        var slot = GetSlotById(targetSlotId);
+        Destroy(slot.itemObject.gameObject);            //slot에 있는 물체 파괴
+        slot.CreateItem(carryingItem.itemId + 1);       //슬롯에 다음 번호 물체 생성
+        Destroy(carryingItem.gameObject);               //잡고 있는 물체 파괴
+    }
+
+    void OnItemCarryFail()
+    {//아이템 배치 실패 시 실행
+        var slot = GetSlotById(carryingItem.slotId);        //슬롯 위치 확인
+        slot.CreateItem(carryingItem.itemId);               //해당 슬롯에 다시 생성
+        Destroy(carryingItem.gameObject);                   //잡고 있는 물체 파괴
+    }
+    void PlaceRandomItem()
+    {//랜덤한 슬롯에 아이템 배치
+        if (AllSlotsOccupied())
+        {
+            return;
+        }
+        var rand = UnityEngine.Random.Range(0, slots.Length); //유니티 랜덤함수를 가져와서 0 ~ 배열 크기 사이 값
+        var slot = GetSlotById(rand);
+        while (slot.state == Slot.SLOTSTATE.FULL)
+        {
+            rand = UnityEngine.Random.Range(0, slots.Length);
+            slot = GetSlotById(rand);
+        }
+        slot.CreateItem(0);
+    }
+    public void PlaceItem(int x, int y, int itemId = 0)
+    {
+        for (int i = 0; i < slotDictionary.Count; i++)
+        {
+            var slot = GetSlotById(i);
+            if (slot.x == x && slot.y == y)
+            {
+                if (itemId != 1)
+                {
+                    slot.CreateItem(itemId);
+                }
+                else
+                {
+                    slot.CreateItem(0);
+                }
+            }
+        }
+    }
+
+
+    bool AllSlotsOccupied()
+    {//모든 슬롯이 채워져 있는지 확인
+        foreach (var slot in slots)                       //foreach문을 통해서 Slots 배열을 검사후
+        {
+            if (slot.state == Slot.SLOTSTATE.EMPTY)       //비어있는지 확인
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    Slot GetSlotById(int id)
+    {//슬롯 ID로 딕셔너리에서 Slot 클래스를 리턴
         return slotDictionary[id];
     }
+
+    void GameOver()
+    {
+        Debug.Log("GameOVER!!!!!!!");
+        // 게임오버 시 발동하는 함수
+    }
+
+
 }
