@@ -25,17 +25,13 @@ public class GameController : MonoBehaviour
             slotDictionary.Add(i, slots[i]);
         }
 
-        PlaceItem(1, 1);
-        PlaceItem(3, 1);
-        PlaceItem(3, 2, 3);
+        
+        //placeItem 사용하여 아이템 배치
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PlaceRandomItem();
-        }
+        
 
         if (Input.GetMouseButtonDown(0)) //마우스 누를 때
         {
@@ -146,22 +142,8 @@ public class GameController : MonoBehaviour
         slot.CreateItem(carryingItem.itemId);               //해당 슬롯에 다시 생성
         Destroy(carryingItem.gameObject);                   //잡고 있는 물체 파괴
     }
-    void PlaceRandomItem()
-    {//랜덤한 슬롯에 아이템 배치
-        if (AllSlotsOccupied())
-        {
-            return;
-        }
-        var rand = UnityEngine.Random.Range(0, slots.Length); //유니티 랜덤함수를 가져와서 0 ~ 배열 크기 사이 값
-        var slot = GetSlotById(rand);
-        while (slot.state == Slot.SLOTSTATE.FULL)
-        {
-            rand = UnityEngine.Random.Range(0, slots.Length);
-            slot = GetSlotById(rand);
-        }
-        slot.CreateItem(0);
-    }
-    public void PlaceItem(int x, int y, int itemId = 0)
+   
+    public void PlaceItem(int x, int y, int itemId = 0)             //슬롯의 x값,y값,id값
     {
         for (int i = 0; i < slotDictionary.Count; i++)
         {
