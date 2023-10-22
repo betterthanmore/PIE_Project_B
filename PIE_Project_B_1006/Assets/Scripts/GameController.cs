@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -30,7 +33,18 @@ public class GameController : MonoBehaviour
 
 
         //placeItem 사용하여 아이템 배치
-        PlaceItem(1, 1, 1);
+        PlaceItem(8, 1, 2);
+        PlaceItem(4, 2, 2);
+        PlaceItem(6, 2, 3);
+        PlaceItem(2, 3, 2);
+        PlaceItem(3, 4, 2);
+        PlaceItem(2, 5, 2);
+        PlaceItem(5, 5, 3);
+        PlaceItem(7, 5, 3);
+        PlaceItem(2, 6, 2);
+        PlaceItem(3, 7, 3);
+        PlaceItem(5, 7, 3);
+        PlaceItem(7, 8, 2);
     }
 
     void Update()
@@ -80,17 +94,23 @@ public class GameController : MonoBehaviour
             {//빈 슬롯에 아이템 배치
                 if ((carryingItem.slotX == slot.x || carryingItem.slotY == slot.y) && !(carryingItem.slotX == slot.x && carryingItem.slotY == slot.y))
                 {
-                    if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
+                    int x = carryingItem.slotX - slot.x;
+                    int y = carryingItem.slotY - slot.y;
+                    if (Mathf.Abs(x) == 1 || Mathf.Abs(y) == 1)
                     {
-                        slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
-                        Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
-                        GameManager.Instance.stages[stage - 1].moveAmount--;
-                    }
-                    else
-                    {
-                        GameOver();                             // 게임 오버 함수 호출
+                        if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
+                        {
+                            slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
+                            Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
+                            GameManager.Instance.stages[stage - 1].moveAmount--;
+                        }
+                        else
+                        {
+                            GameOver();                             // 게임 오버 함수 호출
+                        }
                     }
                 }
+
                 else
                 {
                     OnItemCarryFail();  //아이템 배치 실패
