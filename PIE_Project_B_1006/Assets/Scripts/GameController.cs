@@ -13,10 +13,13 @@ public class GameController : MonoBehaviour
 
     public int stage;
 
-
-
     private void Start()
     {
+        if (slots == null)
+        {
+            Slot[] _slots = FindObjectsOfType<Slot>();
+            slots = _slots;
+        }
         slotDictionary = new Dictionary<int, Slot>();   //초기화
 
         for (int i = 0; i < slots.Length; i++)
@@ -32,7 +35,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        
+
 
         if (Input.GetMouseButtonDown(0)) //마우스 누를 때
         {
@@ -50,7 +53,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
+    //한칸 이동 제한 스크립트 추가해야함 Slot X Slot Y가 1,-1 차이날때만 이동가능
     void SendRayCast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -77,11 +80,11 @@ public class GameController : MonoBehaviour
             {//빈 슬롯에 아이템 배치
                 if ((carryingItem.slotX == slot.x || carryingItem.slotY == slot.y) && !(carryingItem.slotX == slot.x && carryingItem.slotY == slot.y))
                 {
-                    if(GameManager.Instance.stages[stage].moveAmount > 0)
+                    if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
                         slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
                         Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
-                        GameManager.Instance.stages[stage].moveAmount--;
+                        GameManager.Instance.stages[stage - 1].moveAmount--;
                     }
                     else
                     {
@@ -97,10 +100,10 @@ public class GameController : MonoBehaviour
             {//Checking 후 병합
                 if (slot.itemObject.id == carryingItem.itemId)
                 {
-                    if (GameManager.Instance.stages[stage].moveAmount > 0)
+                    if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
                         OnItemMergedWithTarget(slot.id);    //병합 함수 호출
-                        GameManager.Instance.stages[stage].moveAmount--;
+                        GameManager.Instance.stages[stage - 1].moveAmount--;
                     }
                     else
                     {
@@ -145,7 +148,7 @@ public class GameController : MonoBehaviour
         slot.CreateItem(carryingItem.itemId);               //해당 슬롯에 다시 생성
         Destroy(carryingItem.gameObject);                   //잡고 있는 물체 파괴
     }
-   
+
     public void PlaceItem(int x, int y, int itemId = 0)             //슬롯의 x값,y값,id값
     {
         for (int i = 0; i < slotDictionary.Count; i++)
@@ -153,7 +156,7 @@ public class GameController : MonoBehaviour
             var slot = GetSlotById(i);
             if (slot.x == x && slot.y == y)
             {
-                if (itemId != 1)
+                if (itemId != 0)
                 {
                     slot.CreateItem(itemId);
                 }

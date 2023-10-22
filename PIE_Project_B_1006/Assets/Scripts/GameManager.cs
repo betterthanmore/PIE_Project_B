@@ -2,11 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : GenericSingleton<GameManager>
 {
-   public List<StageInfo> stages = new List<StageInfo>();
-   public void GameOver()
+    public List<StageInfo> stages = new List<StageInfo>();
+    public int stage;
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log(scene.name);
+        Debug.Log(mode);
+        if (scene.name == "SampleScene")
+        {
+            SelectStage();
+        }
+    }
+    public void GameOver()
     {
         Debug.Log("GAMEOVER");
     }
@@ -25,7 +40,7 @@ public class GameManager : GenericSingleton<GameManager>
     {
         StageInfo _stageInfo = stages.Find(stages => stages.stage == stageNum);
 
-        if(_stageInfo != null)
+        if (_stageInfo != null)
         {
             _stageInfo.isCleared = true;
         }
@@ -34,6 +49,16 @@ public class GameManager : GenericSingleton<GameManager>
             Debug.LogWarning($"{stageNum}단계 관련 클래스가 존재하지 않습니다.");
         }
     }
+
+    public void SelectStage()
+    {
+        GameObject newObject = new GameObject("GameController");
+
+        GameController gameController = newObject.AddComponent<GameController>();
+
+        gameController.stage = stage;
+    }
+
     [System.Serializable]
     public class StageInfo
     {

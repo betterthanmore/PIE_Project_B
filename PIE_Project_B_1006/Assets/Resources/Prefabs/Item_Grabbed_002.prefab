@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8904048160398769971
+--- !u!1 &1097568719429441716
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8904048160398769975}
-  - component: {fileID: 8904048160398769974}
-  - component: {fileID: 8904048160398769969}
-  - component: {fileID: 8904048160398769968}
-  - component: {fileID: 7092399870128674190}
-  - component: {fileID: 2655195864571477828}
+  - component: {fileID: 1097568719429441720}
+  - component: {fileID: 1097568719429441721}
+  - component: {fileID: 1097568719429441722}
+  - component: {fileID: -7292083762976259280}
   m_Layer: 0
-  m_Name: Item_003_Grabbed
+  m_Name: Item_Grabbed_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8904048160398769975
+--- !u!4 &1097568719429441720
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.28, y: 3.2841818, z: -2}
+  m_GameObject: {fileID: 1097568719429441716}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7039288, w: -0.71027064}
+  m_LocalPosition: {x: 14.74, y: 5.74, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8904048160398769974
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -270.514}
+--- !u!33 &1097568719429441721
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
+  m_GameObject: {fileID: 1097568719429441716}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8904048160398769969
+--- !u!23 &1097568719429441722
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
+  m_GameObject: {fileID: 1097568719429441716}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9892a0dbf6b86794ea4a638bda8ef9db, type: 2}
+  - {fileID: 2100000, guid: 31c1116965a7f8e41b89331390c3604a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,26 +84,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8904048160398769968
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7092399870128674190
+--- !u!114 &-7292083762976259280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
+  m_GameObject: {fileID: 1097568719429441716}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ca1fabf17372944aba1556fac660432, type: 3}
@@ -115,17 +100,3 @@ MonoBehaviour:
   itemId: 0
   slotX: 0
   slotY: 0
---- !u!114 &2655195864571477828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8904048160398769971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a131427547182a41892d9acb4dd5291, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 3
-  parentSlot: {fileID: 0}
