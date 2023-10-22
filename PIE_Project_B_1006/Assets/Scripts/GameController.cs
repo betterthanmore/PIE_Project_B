@@ -32,19 +32,20 @@ public class GameController : MonoBehaviour
         }
 
 
-        //placeItem 사용하여 아이템 배치
+        //placeItem 사용하여 아이템 배치 
         PlaceItem(8, 1, 2);
         PlaceItem(4, 2, 2);
-        PlaceItem(6, 2, 3);
-        PlaceItem(2, 3, 2);
+        PlaceItem(6, 2, 4);
+        PlaceItem(2, 3, 4);
         PlaceItem(3, 4, 2);
         PlaceItem(2, 5, 2);
         PlaceItem(5, 5, 3);
         PlaceItem(7, 5, 3);
         PlaceItem(2, 6, 2);
-        PlaceItem(3, 7, 3);
+        PlaceItem(3, 7, 4);
         PlaceItem(5, 7, 3);
-        PlaceItem(7, 8, 2);
+        PlaceItem(7, 8, 1);
+        PlaceItem(6, 9, 1);
     }
 
     void Update()
