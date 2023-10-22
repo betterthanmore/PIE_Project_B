@@ -25,8 +25,9 @@ public class GameController : MonoBehaviour
             slotDictionary.Add(i, slots[i]);
         }
 
-        
+
         //placeItem 사용하여 아이템 배치
+        PlaceItem(1, 1, 1);
     }
 
     void Update()
@@ -48,6 +49,8 @@ public class GameController : MonoBehaviour
             SendRayCast();
         }
     }
+
+    
     void SendRayCast()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
