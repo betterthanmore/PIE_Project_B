@@ -110,8 +110,11 @@ public class GameController : MonoBehaviour
                             GameOver();                             // 게임 오버 함수 호출
                         }
                     }
+                    else
+                    {
+                        OnItemCarryFail();  //아이템 배치 실패
+                    }
                 }
-
                 else
                 {
                     OnItemCarryFail();  //아이템 배치 실패
@@ -119,16 +122,28 @@ public class GameController : MonoBehaviour
             }
             else if (slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
             {//Checking 후 병합
-                if (slot.itemObject.id == carryingItem.itemId)
+                if ((carryingItem.slotX == slot.x || carryingItem.slotY == slot.y) && !(carryingItem.slotX == slot.x && carryingItem.slotY == slot.y))
                 {
-                    if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
+                    int x = carryingItem.slotX - slot.x;
+                    int y = carryingItem.slotY - slot.y;
+                    if (Mathf.Abs(x) == 1 || Mathf.Abs(y) == 1)
                     {
-                        OnItemMergedWithTarget(slot.id);    //병합 함수 호출
-                        GameManager.Instance.stages[stage - 1].moveAmount--;
+                        if (slot.itemObject.id == carryingItem.itemId)
+                        {
+                            if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
+                            {
+                                OnItemMergedWithTarget(slot.id);    //병합 함수 호출
+                                GameManager.Instance.stages[stage - 1].moveAmount--;
+                            }
+                            else
+                            {
+                                GameOver();                             // 게임 오버 함수 호출
+                            }
+                        }
                     }
                     else
                     {
-                        GameOver();                             // 게임 오버 함수 호출
+                        OnItemCarryFail();  //아이템 배치 실패
                     }
                 }
                 else
