@@ -97,23 +97,17 @@ public class GameController : MonoBehaviour
                 {
                     int x = carryingItem.slotX - slot.x;
                     int y = carryingItem.slotY - slot.y;
-                    if (Mathf.Abs(x) == 1 || Mathf.Abs(y) == 1)
+                    if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
-                        if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
-                        {
-                            slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
-                            Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
-                            GameManager.Instance.stages[stage - 1].moveAmount--;
-                        }
-                        else
-                        {
-                            GameOver();                             // 게임 오버 함수 호출
-                        }
+                        slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
+                        Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
+                        GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                     }
                     else
                     {
-                        OnItemCarryFail();  //아이템 배치 실패
+                        GameOver();                             // 게임 오버 함수 호출
                     }
+                  
                 }
                 else
                 {
@@ -126,25 +120,20 @@ public class GameController : MonoBehaviour
                 {
                     int x = carryingItem.slotX - slot.x;
                     int y = carryingItem.slotY - slot.y;
-                    if (Mathf.Abs(x) == 1 || Mathf.Abs(y) == 1)
-                    {
+                   
                         if (slot.itemObject.id == carryingItem.itemId)
                         {
                             if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                             {
                                 OnItemMergedWithTarget(slot.id);    //병합 함수 호출
-                                GameManager.Instance.stages[stage - 1].moveAmount--;
+                                GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                             }
                             else
                             {
                                 GameOver();                             // 게임 오버 함수 호출
                             }
                         }
-                    }
-                    else
-                    {
-                        OnItemCarryFail();  //아이템 배치 실패
-                    }
+                   
                 }
                 else
                 {
