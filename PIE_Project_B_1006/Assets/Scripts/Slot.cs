@@ -15,6 +15,9 @@ public class Slot : MonoBehaviour
     public Item itemObject;                     //선언한 커스텀 Class ID
     public SLOTSTATE state = SLOTSTATE.EMPTY;   //Enum 값 선언
     public int x, y;
+    public bool isMoveTile = false;
+    public int moveAmount;
+    public int xOry;
 
     private void ChangeStateTo(SLOTSTATE targetState)
     {//해당 슬롯의 상태값을 변환 시켜주는 함수
