@@ -26,13 +26,15 @@ public class GameManager : GenericSingleton<GameManager>
         Debug.Log("GAMEOVER");
     }
 
-    public void StageSetting(int stageNum, int move)
+    public void StageSetting(int stageNum, int move, int itemId, int amount)
     {
         StageInfo _stageInfo = new StageInfo
         {
             stage = stageNum,
             isCleared = false,
-            moveAmount = move
+            moveAmount = move,
+            clearItemId = itemId,
+            clearAmount = amount
         };
         stages.Add(_stageInfo);
     }
@@ -65,6 +67,8 @@ public class GameManager : GenericSingleton<GameManager>
         public int stage;
         public bool isCleared = false;
         public int moveAmount;
+        public int clearItemId;
+        public int clearAmount;
     }
 
 }

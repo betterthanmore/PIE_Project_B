@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
+
     public void startButton()
     {
         SceneManager.LoadScene("StageScene");
@@ -18,4 +20,8 @@ public class UI : MonoBehaviour
         GameManager.Instance.stage = stage;
         SceneManager.LoadScene("SampleScene");
     }
+    public void ReturnButton()
+    {
+        SceneManager.LoadScene("StageScene");
+    }    
 }

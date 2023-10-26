@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using System;
+using JetBrains.Annotations;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class GameController : MonoBehaviour
     private Dictionary<int, Slot> slotDictionary;       //Slot id, Slot class 관리하기 위한 자료구조
 
     public int stage;
+
+    
 
     private void Start()
     {
@@ -48,6 +52,10 @@ public class GameController : MonoBehaviour
         PlaceItem(6, 9, 1);
 
         // Move Tile 관련 세팅 예제
+        /*SetClearTile(2, 1);
+        SetClearTile(7, 3);
+        SetClearTile(2, 8);
+*/
         SetMoveTile(1, 3, 2, 'Y');
         SetMoveTile(3, 2, -1, 'X');
     }
@@ -70,7 +78,11 @@ public class GameController : MonoBehaviour
         {
             SendRayCast();
         }
+
+        
     }
+
+     
 
     //한칸 이동 제한 스크립트 추가해야함 Slot X Slot Y가 1,-1 차이날때만 이동가능
     void SendRayCast()
@@ -103,12 +115,12 @@ public class GameController : MonoBehaviour
                     int y = carryingItem.slotY - slot.y;
                     if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
-                        if (slot.isMoveTile == false)
+                        if (slot.tileType == 0)
                         {
                             slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
                             Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
                         }
-                        else
+                        else if (slot.tileType == 1)
                         {
                             if (slot.xOry == 1)
                             {
@@ -121,6 +133,20 @@ public class GameController : MonoBehaviour
                                 UseMoveTile(slot.x, _y, carryingItem.itemId);
                             }
                             Destroy(carryingItem.gameObject);
+                        }
+                        else if (slot.tileType == 2)
+                        {
+                            GameManager.StageInfo _stageInfo = GameManager.Instance.stages.Find(stages => stages.stage == GameManager.Instance.stage);
+                            if (carryingItem.itemId == _stageInfo.clearItemId)
+                            {
+                                slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
+                                slot.isCleared();
+                                Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
+                            }
+                            else
+                            {
+                                OnItemCarryFail();  //아이템 배치 실패
+                            }
                         }
                         GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                     }
@@ -146,11 +172,11 @@ public class GameController : MonoBehaviour
                     {
                         if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                         {
-                            if (slot.isMoveTile == false)
+                            if (slot.tileType == 0)
                             {
                                 OnItemMergedWithTarget(slot.id);    //병합 함수 호출
                             }
-                            else
+                            else if (slot.tileType == 1)
                             {
                                 if (slot.xOry == 1)
                                 {
@@ -162,6 +188,10 @@ public class GameController : MonoBehaviour
                                     int _y = slot.y + slot.moveAmount;
                                     UseMoveTile(slot.x, _y, carryingItem.itemId, true);
                                 }
+                            }
+                            else if (slot.tileType == 2)
+                            {
+                                OnItemCarryFail();  //아이템 배치 실패
                             }
                             GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                         }
@@ -185,6 +215,20 @@ public class GameController : MonoBehaviour
         }
 
     }
+
+    public void SetClearTile(int x, int y)
+    {
+        for (int i = 0; i < slotDictionary.Count; i++)
+        {
+            var slot = GetSlotById(i);
+            if (slot.x == x && slot.y == y)
+            {
+                slot.tileType = 2;
+                
+            }
+        }
+    }
+
     public void SetMoveTile(int x, int y, int moveAmount, char xOrY)            // SetMoveTile(1,2,3,X) 1,2에 존재하는 타일을 x축으로 3칸(오른쪽으로) 이동하게 만듬
     {
         for (int i = 0; i < slotDictionary.Count; i++)
@@ -192,7 +236,7 @@ public class GameController : MonoBehaviour
             var slot = GetSlotById(i);
             if (slot.x == x && slot.y == y)
             {
-                slot.isMoveTile = true;
+                slot.tileType = 1;
                 slot.moveAmount = moveAmount;
                 if (xOrY == 'X')
                 {

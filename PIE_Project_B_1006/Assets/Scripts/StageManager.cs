@@ -11,11 +11,11 @@ public class StageManager : MonoBehaviour
         gm = GameManager.Instance;
         if (gm != null)
         {
-            gm.StageSetting(1, 40);
-            gm.StageSetting(2, 40);
-            gm.StageSetting(3, 40);
-            gm.StageSetting(4, 40);
-            gm.StageSetting(5, 40);
+            gm.StageSetting(1, 40, 5, 3);
+            gm.StageSetting(2, 40, 5, 3);
+            gm.StageSetting(3, 40, 5, 3);
+            gm.StageSetting(4, 40, 5, 3);
+            gm.StageSetting(5, 40, 5, 3);
         }
         else
         {
