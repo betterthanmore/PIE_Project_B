@@ -39,14 +39,14 @@ public class Slot : MonoBehaviour
         GameManager.StageInfo _stageInfo = GameManager.Instance.stages.Find(stages => stages.stage == GameManager.Instance.stage);          // 게임메니저에서 이 스테이지 관련 클래스를 리스트에서 불러옴
         if (y == true)
         {
-            if (itemObject.id == clearId)
+            if (itemObject.id == _stageInfo.clearItemId)
             {
                 if (_stageInfo != null)
                 {
                     _stageInfo.clearAmount -= 1;            // 그 리스트에서 클리어 조건 횟수를 차감함
                     if (_stageInfo.clearAmount == 0)
                     {
-                        _stageInfo.isCleared = true;
+                        GameManager.Instance.StageClear(GameManager.Instance.stage);
                     }
                 }
             }

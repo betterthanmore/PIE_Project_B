@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-
 using UnityEngine;
 using System;
 using JetBrains.Annotations;
@@ -51,13 +50,14 @@ public class GameController : MonoBehaviour
         PlaceItem(7, 8, 1);
         PlaceItem(6, 9, 1);
 
-        // Move Tile 包访 技泼 抗力
-        /*SetClearTile(2, 1);
+        // Clear Tile 包访 技泼 抗力
+        SetClearTile(2, 1);
         SetClearTile(7, 3);
         SetClearTile(2, 8);
-*/
-        SetMoveTile(1, 3, 2, 'Y');
-        SetMoveTile(3, 2, -1, 'X');
+
+        // Move Tile 包访 技泼 抗力
+        /*        SetMoveTile(1, 3, 2, 'Y');
+                SetMoveTile(3, 2, -1, 'X');*/
     }
 
     void Update()

@@ -8,17 +8,27 @@ public class GameManager : GenericSingleton<GameManager>
 {
     public List<StageInfo> stages = new List<StageInfo>();
     public int stage;
+    public GameObject clear;
+    public bool clearflag;
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        clear.SetActive(false);
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log(scene.name);
         Debug.Log(mode);
+        clear.SetActive(false);
         if (scene.name == "SampleScene")
         {
             SelectStage();
+            //clear = Resources.Load<GameObject>("Prefabs/Clear");
         }
     }
     public void GameOver()
@@ -45,6 +55,13 @@ public class GameManager : GenericSingleton<GameManager>
         if (_stageInfo != null)
         {
             _stageInfo.isCleared = true;
+            clear.SetActive(true);
+
+            if(!clearflag)
+            {
+                StartCoroutine(ClearMoveMain());
+                clearflag = true;
+            }
         }
         else
         {
@@ -54,6 +71,7 @@ public class GameManager : GenericSingleton<GameManager>
 
     public void SelectStage()
     {
+       
         GameObject newObject = new GameObject("GameController");
 
         GameController gameController = newObject.AddComponent<GameController>();
@@ -70,5 +88,15 @@ public class GameManager : GenericSingleton<GameManager>
         public int clearItemId;
         public int clearAmount;
     }
+
+    IEnumerator ClearMoveMain()
+    {
+        yield return new WaitForSeconds(1.0f);
+        clearflag = false;
+        clear.SetActive(false);
+        SceneManager.LoadScene("StageScene"); 
+    }
+
+  
 
 }
