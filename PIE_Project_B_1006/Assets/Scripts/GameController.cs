@@ -5,6 +5,8 @@ using UnityEngine;
 using System;
 using JetBrains.Annotations;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameController : MonoBehaviour
 {
@@ -34,26 +36,55 @@ public class GameController : MonoBehaviour
             slotDictionary.Add(i, slots[i]);
         }
 
+        if(stage == 1)
+        {
+            //placeItem 사용하여 아이템 배치 
+            PlaceItem(8, 1, 2);
+            PlaceItem(4, 2, 2);
+            PlaceItem(6, 2, 4);
+            PlaceItem(2, 3, 4);
+            PlaceItem(3, 4, 2);
+            PlaceItem(2, 5, 2);
+            PlaceItem(5, 5, 3);
+            PlaceItem(7, 5, 3);
+            PlaceItem(2, 6, 2);
+            PlaceItem(3, 7, 4);
+            PlaceItem(5, 7, 3);
+            PlaceItem(7, 8, 1);
+            PlaceItem(6, 9, 1);
 
-        //placeItem 사용하여 아이템 배치 
-        PlaceItem(8, 1, 2);
-        PlaceItem(4, 2, 2);
-        PlaceItem(6, 2, 4);
-        PlaceItem(2, 3, 4);
-        PlaceItem(3, 4, 2);
-        PlaceItem(2, 5, 2);
-        PlaceItem(5, 5, 3);
-        PlaceItem(7, 5, 3);
-        PlaceItem(2, 6, 2);
-        PlaceItem(3, 7, 4);
-        PlaceItem(5, 7, 3);
-        PlaceItem(7, 8, 1);
-        PlaceItem(6, 9, 1);
+            // Clear Tile 관련 세팅 예제
+            SetClearTile(2, 1);
+            SetClearTile(7, 3);
+            SetClearTile(2, 8);
 
-        // Clear Tile 관련 세팅 예제
-        SetClearTile(2, 1);
-        SetClearTile(7, 3);
-        SetClearTile(2, 8);
+        }
+        else if(stage == 2)
+        {
+            //placeItem 사용하여 아이템 배치 
+            PlaceItem(8, 1, 2);
+            PlaceItem(4, 2, 2);
+            PlaceItem(6, 2, 4);
+            PlaceItem(2, 3, 4);
+            PlaceItem(3, 4, 2);
+            PlaceItem(2, 5, 2);
+            PlaceItem(5, 5, 3);
+            PlaceItem(7, 5, 3);
+            PlaceItem(2, 6, 2);
+            PlaceItem(3, 7, 4);
+            PlaceItem(5, 7, 3);
+            PlaceItem(7, 8, 1);
+            PlaceItem(6, 9, 1);
+
+            // Clear Tile 관련 세팅 예제
+            SetClearTile(2, 1);
+            SetClearTile(7, 3);
+            SetClearTile(2, 8);
+
+        }
+
+
+
 
         // Move Tile 관련 세팅 예제
         /*        SetMoveTile(1, 3, 2, 'Y');

@@ -29,6 +29,7 @@ public class GameManager : GenericSingleton<GameManager>
         {
             SelectStage();
             //clear = Resources.Load<GameObject>("Prefabs/Clear");
+
         }
     }
     public void GameOver()
