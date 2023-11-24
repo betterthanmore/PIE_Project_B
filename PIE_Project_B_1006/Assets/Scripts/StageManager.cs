@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class StageManager : MonoBehaviour
         else
         {
             Debug.Log("GameManager를 찾을수 없습니다");
+        }
+
+        if( SceneManager.GetActiveScene().name == "SceneName")
+        {
+         
         }
     }
 }
