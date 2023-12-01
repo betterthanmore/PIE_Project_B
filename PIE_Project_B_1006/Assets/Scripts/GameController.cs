@@ -376,10 +376,27 @@ public class GameController : MonoBehaviour
         return slotDictionary[id];
     }
 
+    public RestartButton restartButton;
     void GameOver()
     {
-        Debug.Log("GameOVER!!!!!!!");
-        // 게임오버 시 발동하는 함수
+        if (GameManager.Instance.stages[stage - 1].moveAmount == 0)
+        {
+            if(restartButton != null)
+            {
+                restartButton.gameObject.SetActive(true);
+            }
+            else if(GameManager.Instance.stages[stage - 1].moveAmount < 0)
+            {
+                restartButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.Log("Null");
+            }
+            
+
+            
+        }
     }
 
 
