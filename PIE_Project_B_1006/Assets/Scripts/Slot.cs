@@ -68,7 +68,7 @@ public class Slot : MonoBehaviour
         var itemGo = (GameObject)Instantiate(Resources.Load(itemPath));
 
         itemGo.transform.SetParent(this.transform);
-        itemGo.transform.localPosition = Vector3.zero;
+        itemGo.transform.localPosition = Vector3.zero + new Vector3(0.0f,0.0f, -3.0f);
         itemGo.transform.localScale = Vector3.one;
         //아이템 값 정보를 입력
         itemObject = itemGo.GetComponent<Item>();

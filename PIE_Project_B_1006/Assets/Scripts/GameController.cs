@@ -61,8 +61,26 @@ public class GameController : MonoBehaviour
         }
         else if(stage == 2)
         {
-            
 
+            //placeItem 사용하여 아이템 배치 
+            PlaceItem(8, 1, 2);
+            PlaceItem(4, 2, 2);
+            PlaceItem(6, 2, 4);
+            PlaceItem(2, 3, 4);
+            PlaceItem(3, 4, 2);
+            PlaceItem(2, 5, 2);
+            PlaceItem(5, 5, 3);
+            PlaceItem(7, 5, 3);
+            PlaceItem(2, 6, 2);
+            PlaceItem(3, 7, 4);
+            PlaceItem(5, 7, 3);
+            PlaceItem(7, 8, 1);
+            PlaceItem(6, 9, 1);
+
+            // Clear Tile 관련 세팅 예제
+            SetClearTile(2, 1);
+            SetClearTile(7, 3);
+            SetClearTile(2, 8);
         }
 
 
@@ -106,6 +124,9 @@ public class GameController : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             var slot = hit.transform.GetComponent<Slot>();          //Raycast를 통해 나온 Slot칸
+            if (slot == null)
+                return;
+
             if (slot.state == Slot.SLOTSTATE.FULL && carryingItem == null)
             {
                 string itemPath = "Prefabs/Item_Grabbed_" + slot.itemObject.id.ToString("000");
@@ -296,7 +317,7 @@ public class GameController : MonoBehaviour
     void OnItemSelected()
     {   //아이템을 선택하고 마우스 위치로 이동 
         _target = Camera.main.ScreenToWorldPoint(Input.mousePosition);  //좌표변환
-        _target.z = 0;
+        _target.z = -4;
         var delta = 10 * Time.deltaTime;
         delta *= Vector3.Distance(transform.position, _target);
         carryingItem.transform.position = Vector3.MoveTowards(carryingItem.transform.position, _target, delta);
