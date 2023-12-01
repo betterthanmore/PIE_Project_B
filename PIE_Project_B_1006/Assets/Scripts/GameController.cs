@@ -63,24 +63,26 @@ public class GameController : MonoBehaviour
         {
 
             //placeItem 사용하여 아이템 배치 
-            PlaceItem(8, 1, 2);
-            PlaceItem(4, 2, 2);
-            PlaceItem(6, 2, 4);
-            PlaceItem(2, 3, 4);
-            PlaceItem(3, 4, 2);
-            PlaceItem(2, 5, 2);
-            PlaceItem(5, 5, 3);
-            PlaceItem(7, 5, 3);
-            PlaceItem(2, 6, 2);
-            PlaceItem(3, 7, 4);
-            PlaceItem(5, 7, 3);
-            PlaceItem(7, 8, 1);
-            PlaceItem(6, 9, 1);
+            PlaceItem(3, 1, 3);
+            PlaceItem(6, 1, 3);
+            PlaceItem(9, 1, 4);
+            PlaceItem(2, 2, 1);
+            PlaceItem(4, 3, 3);
+            PlaceItem(8, 3, 2);
+            PlaceItem(5, 4, 2);
+            PlaceItem(2, 5, 1);
+            PlaceItem(7, 5, 2);
+            PlaceItem(5, 6, 2);
+            PlaceItem(8, 6, 2);
+            PlaceItem(6, 7, 3);
+            PlaceItem(3, 8, 4);
+            PlaceItem(1, 9, 2);
+            PlaceItem(5, 9, 2);
 
             // Clear Tile 관련 세팅 예제
-            SetClearTile(2, 1);
-            SetClearTile(7, 3);
-            SetClearTile(2, 8);
+            SetClearTile(3, 4);
+            SetClearTile(3, 7);
+            SetClearTile(7, 8);
         }
 
 
