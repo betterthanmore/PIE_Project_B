@@ -20,6 +20,11 @@ public class RemainMoveCnt : MonoBehaviour
     public void Update()
     {
         text.text = $"Move : {GameManager.Instance.stages[stage - 1].moveAmount}";
+
+        if(GameManager.Instance.stages[stage - 1].moveAmount <= 0)
+        {
+            text.text = "move : 0 ";
+        }
     }
 
 

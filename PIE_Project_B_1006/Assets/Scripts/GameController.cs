@@ -19,7 +19,18 @@ public class GameController : MonoBehaviour
 
     public int stage;
 
+    public GameManager gameManager;
+
+    public Slot slot;
+
     
+
+    
+
+
+
+
+
 
     private void Start()
     {
@@ -112,7 +123,26 @@ public class GameController : MonoBehaviour
             SendRayCast();
         }
 
+
+        int moveAmount;
+
+        moveAmount = slot.moveAmount;
         
+
+        int moveAmountAbs = Mathf.Abs(moveAmount);
+
+        if (moveAmountAbs < 1)
+        {
+            GameOver(0);
+        }
+        else if (moveAmount <= 0)
+        {
+            GameOver(0);
+        }
+        
+
+
+
     }
 
      
@@ -188,7 +218,7 @@ public class GameController : MonoBehaviour
                     }
                     else
                     {
-                        GameOver();                             // 게임 오버 함수 호출
+                        GameOver(0);           // 게임 오버 함수 호출
                     }
 
                 }
@@ -233,7 +263,7 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            GameOver();                             // 게임 오버 함수 호출
+                            GameOver(0);                 // 게임 오버 함수 호출
                         }
                     }
 
@@ -376,28 +406,14 @@ public class GameController : MonoBehaviour
         return slotDictionary[id];
     }
 
-    public RestartButton restartButton;
-    void GameOver()
-    {
-        if (GameManager.Instance.stages[stage - 1].moveAmount == 0)
-        {
-            if(restartButton != null)
-            {
-                restartButton.gameObject.SetActive(true);
-            }
-            else if(GameManager.Instance.stages[stage - 1].moveAmount < 0)
-            {
-                restartButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                Debug.Log("Null");
-            }
-            
 
-            
-        }
+    
+    public void GameOver(int moveAmount)
+    {
+        SceneManager.LoadScene("GameOver");
     }
+    
+   
 
 
 }
