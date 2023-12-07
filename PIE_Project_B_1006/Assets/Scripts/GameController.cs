@@ -23,9 +23,9 @@ public class GameController : MonoBehaviour
 
     public Slot slot;
 
-    
 
-    
+
+
 
 
 
@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
             slotDictionary.Add(i, slots[i]);
         }
 
-        if(stage == 1)
+        if (stage == 1)
         {
             //placeItem 사용하여 아이템 배치 
             PlaceItem(8, 1, 2);
@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
             SetClearTile(2, 8);
 
         }
-        else if(stage == 2)
+        else if (stage == 2)
         {
 
             //placeItem 사용하여 아이템 배치 
@@ -94,6 +94,11 @@ public class GameController : MonoBehaviour
             SetClearTile(3, 4);
             SetClearTile(3, 7);
             SetClearTile(7, 8);
+
+            SetMoveTile(6, 3, 3, 'Y');
+            SetMoveTile(1, 6, -3, 'Y');
+            SetMoveTile(4, 5, 2, 'X');
+            
         }
 
 
@@ -124,14 +129,14 @@ public class GameController : MonoBehaviour
         }
 
 
-        
-        
+
+
 
 
 
     }
 
-     
+
 
     //한칸 이동 제한 스크립트 추가해야함 Slot X Slot Y가 1,-1 차이날때만 이동가능
     void SendRayCast()
@@ -171,7 +176,7 @@ public class GameController : MonoBehaviour
 
                     if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
-                        if ( X > 0 || Y > 0 )
+                        if (X > 0 || Y > 0)
                         {
                             if (slot.tileType == 0)
                             {
@@ -260,7 +265,7 @@ public class GameController : MonoBehaviour
                                 }
                                 GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                             }
-                            else if(GameManager.Instance.stages[stage - 1].moveAmount == 0 || GameManager.Instance.stages[stage - 1].moveAmount < 0 )
+                            else if (GameManager.Instance.stages[stage - 1].moveAmount == 0 || GameManager.Instance.stages[stage - 1].moveAmount < 0)
                             {
                                 GameOver(0);                 // 게임 오버 함수 호출
                             }
@@ -294,7 +299,7 @@ public class GameController : MonoBehaviour
             if (slot.x == x && slot.y == y)
             {
                 slot.tileType = 2;
-                
+
             }
         }
     }
@@ -306,6 +311,7 @@ public class GameController : MonoBehaviour
             var slot = GetSlotById(i);
             if (slot.x == x && slot.y == y)
             {
+                slot.GetComponent<MeshRenderer>().material = Resources.Load<Material>("Materials/Move");
                 slot.tileType = 1;
                 slot.moveAmount = moveAmount;
                 if (xOrY == 'X')
@@ -411,13 +417,14 @@ public class GameController : MonoBehaviour
     }
 
 
-    
+
     public void GameOver(int moveAmount)
     {
         SceneManager.LoadScene("GameOver");
     }
-    
-   
+
+
 
 
 }
+

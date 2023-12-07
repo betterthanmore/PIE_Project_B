@@ -19,7 +19,7 @@ public class RemainMoveCnt : MonoBehaviour
 
     public void Update()
     {
-        
+        text.text = $"Move : {GameManager.Instance.stages[stage - 1].moveAmount}";
     }
 
 

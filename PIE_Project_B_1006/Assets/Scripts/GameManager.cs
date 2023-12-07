@@ -43,7 +43,7 @@ public class GameManager : GenericSingleton<GameManager>
         {
             stage = stageNum,
             isCleared = false,
-            moveAmount = move,
+            defaultMoveAmount = move,
             clearItemId = itemId,
             clearAmount = amount
         };
@@ -58,7 +58,7 @@ public class GameManager : GenericSingleton<GameManager>
             _stageInfo.isCleared = true;
             clear.SetActive(true);
 
-            if(!clearflag)
+            if (!clearflag)
             {
                 StartCoroutine(ClearMoveMain());
                 clearflag = true;
@@ -72,12 +72,13 @@ public class GameManager : GenericSingleton<GameManager>
 
     public void SelectStage()
     {
-       
+
         GameObject newObject = new GameObject("GameController");
 
         GameController gameController = newObject.AddComponent<GameController>();
 
         gameController.stage = stage;
+        stages[stage - 1].moveAmount = stages[stage - 1].defaultMoveAmount;
     }
 
     [System.Serializable]
@@ -88,6 +89,7 @@ public class GameManager : GenericSingleton<GameManager>
         public int moveAmount;
         public int clearItemId;
         public int clearAmount;
+        public int defaultMoveAmount;
     }
 
     IEnumerator ClearMoveMain()
@@ -95,9 +97,9 @@ public class GameManager : GenericSingleton<GameManager>
         yield return new WaitForSeconds(1.0f);
         clearflag = false;
         clear.SetActive(false);
-        SceneManager.LoadScene("StageScene"); 
+        SceneManager.LoadScene("StageScene");
     }
 
-  
+
 
 }
