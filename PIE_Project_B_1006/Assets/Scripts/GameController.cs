@@ -6,7 +6,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using Unity.Mathematics;
 
 public class GameController : MonoBehaviour
 {
@@ -124,21 +124,7 @@ public class GameController : MonoBehaviour
         }
 
 
-        int moveAmount;
-
-        moveAmount = slot.moveAmount;
         
-
-        int moveAmountAbs = Mathf.Abs(moveAmount);
-
-        if (moveAmountAbs < 1)
-        {
-            GameOver(0);
-        }
-        else if (moveAmount <= 0)
-        {
-            GameOver(0);
-        }
         
 
 
@@ -179,42 +165,49 @@ public class GameController : MonoBehaviour
                 {
                     int x = carryingItem.slotX - slot.x;
                     int y = carryingItem.slotY - slot.y;
+
+                    int X = Mathf.Abs(x);
+                    int Y = Math.Abs(y);
+
                     if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                     {
-                        if (slot.tileType == 0)
+                        if ( X > 0 || Y > 0 )
                         {
-                            slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
-                            Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
-                        }
-                        else if (slot.tileType == 1)
-                        {
-                            if (slot.xOry == 1)
-                            {
-                                int _x = slot.x + slot.moveAmount;
-                                UseMoveTile(_x, slot.y, slot.id);
-                            }
-                            else if (slot.xOry == 2)
-                            {
-                                int _y = slot.y + slot.moveAmount;
-                                UseMoveTile(slot.x, _y, carryingItem.itemId);
-                            }
-                            Destroy(carryingItem.gameObject);
-                        }
-                        else if (slot.tileType == 2)
-                        {
-                            GameManager.StageInfo _stageInfo = GameManager.Instance.stages.Find(stages => stages.stage == GameManager.Instance.stage);
-                            if (carryingItem.itemId == _stageInfo.clearItemId)
+                            if (slot.tileType == 0)
                             {
                                 slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
-                                slot.isCleared();
                                 Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
                             }
-                            else
+                            else if (slot.tileType == 1)
                             {
-                                OnItemCarryFail();  //아이템 배치 실패
+                                if (slot.xOry == 1)
+                                {
+                                    int _x = slot.x + slot.moveAmount;
+                                    UseMoveTile(_x, slot.y, slot.id);
+                                }
+                                else if (slot.xOry == 2)
+                                {
+                                    int _y = slot.y + slot.moveAmount;
+                                    UseMoveTile(slot.x, _y, carryingItem.itemId);
+                                }
+                                Destroy(carryingItem.gameObject);
                             }
+                            else if (slot.tileType == 2)
+                            {
+                                GameManager.StageInfo _stageInfo = GameManager.Instance.stages.Find(stages => stages.stage == GameManager.Instance.stage);
+                                if (carryingItem.itemId == _stageInfo.clearItemId)
+                                {
+                                    slot.CreateItem(carryingItem.itemId);       //잡고 있는것 슬롯 위치에 생성
+                                    slot.isCleared();
+                                    Destroy(carryingItem.gameObject);           //잡고 있는것 파괴
+                                }
+                                else
+                                {
+                                    OnItemCarryFail();  //아이템 배치 실패
+                                }
+                            }
+                            GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                         }
-                        GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                     }
                     else
                     {
@@ -234,36 +227,47 @@ public class GameController : MonoBehaviour
                     int x = carryingItem.slotX - slot.x;
                     int y = carryingItem.slotY - slot.y;
 
+                    int X = Mathf.Abs(x);
+                    int Y = Math.Abs(y);
+
                     if (slot.itemObject.id == carryingItem.itemId)
                     {
                         if (GameManager.Instance.stages[stage - 1].moveAmount > 0)
                         {
-                            if (slot.tileType == 0)
+                            if (X > 0 || Y > 0)
                             {
-                                OnItemMergedWithTarget(slot.id);    //병합 함수 호출
-                            }
-                            else if (slot.tileType == 1)
-                            {
-                                if (slot.xOry == 1)
+
+                                if (slot.tileType == 0)
                                 {
-                                    int _x = slot.x + slot.moveAmount;
-                                    UseMoveTile(_x, slot.y, slot.id);
+                                    OnItemMergedWithTarget(slot.id);    //병합 함수 호출
                                 }
-                                else if (slot.xOry == 2)
+                                else if (slot.tileType == 1)
                                 {
-                                    int _y = slot.y + slot.moveAmount;
-                                    UseMoveTile(slot.x, _y, carryingItem.itemId, true);
+                                    if (slot.xOry == 1)
+                                    {
+                                        int _x = slot.x + slot.moveAmount;
+                                        UseMoveTile(_x, slot.y, slot.id);
+                                    }
+                                    else if (slot.xOry == 2)
+                                    {
+                                        int _y = slot.y + slot.moveAmount;
+                                        UseMoveTile(slot.x, _y, carryingItem.itemId, true);
+                                    }
                                 }
+                                else if (slot.tileType == 2)
+                                {
+                                    OnItemCarryFail();  //아이템 배치 실패
+                                }
+                                GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
                             }
-                            else if (slot.tileType == 2)
+                            else if(GameManager.Instance.stages[stage - 1].moveAmount == 0 || GameManager.Instance.stages[stage - 1].moveAmount < 0 )
                             {
-                                OnItemCarryFail();  //아이템 배치 실패
+                                GameOver(0);                 // 게임 오버 함수 호출
                             }
-                            GameManager.Instance.stages[stage - 1].moveAmount -= Mathf.Abs(x + y);
-                        }
-                        else
-                        {
-                            GameOver(0);                 // 게임 오버 함수 호출
+                            else
+                            {
+                                OnItemCarryFail();
+                            }
                         }
                     }
 
