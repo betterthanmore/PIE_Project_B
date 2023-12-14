@@ -9,7 +9,7 @@ public class UI : MonoBehaviour
 
     public void startButton()
     {
-        SceneManager.LoadScene("StageScene");
+        SceneManager.LoadScene("CutScene");
     }
     public void ExitButton()
     {
