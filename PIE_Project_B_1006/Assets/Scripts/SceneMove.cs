@@ -9,6 +9,11 @@ public class SceneMove : MonoBehaviour
    public void SceneMovement(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+
+        if(sceneName == "StageScene")
+        {
+            SoundController.Instance.BGM(false);
+        }
     }
         
 }

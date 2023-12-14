@@ -18,6 +18,7 @@ public class GameManager : GenericSingleton<GameManager>
 
     private void Start()
     {
+        SoundController.Instance.SoundDataLoad();
         clear.SetActive(false);
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

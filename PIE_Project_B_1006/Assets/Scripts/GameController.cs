@@ -101,6 +101,8 @@ public class GameController : MonoBehaviour
             
         }
 
+        //SoundController.Instance.BGM(true);  배경 사운드 끄기 예제
+
 
 
 
@@ -116,6 +118,7 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) //마우스 누를 때
         {
             SendRayCast();
+            SoundController.Instance.PlaySound("Click");
         }
 
         if (Input.GetMouseButton(0) && carryingItem)    //잡고 이동시킬 때
@@ -371,6 +374,7 @@ public class GameController : MonoBehaviour
         Destroy(slot.itemObject.gameObject);            //slot에 있는 물체 파괴
         slot.CreateItem(carryingItem.itemId + 1);       //슬롯에 다음 번호 물체 생성
         Destroy(carryingItem.gameObject);               //잡고 있는 물체 파괴
+        SoundController.Instance.PlaySound("Merge");
     }
 
     void OnItemCarryFail()
@@ -421,6 +425,11 @@ public class GameController : MonoBehaviour
     public void GameOver(int moveAmount)
     {
         SceneManager.LoadScene("GameOver");
+
+        SoundController.Instance.BGM(true);
+
+        SoundController.Instance.PlaySound("GameOver");
+
     }
 
 
