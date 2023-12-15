@@ -101,6 +101,64 @@ public class GameController : MonoBehaviour
             
         }
 
+        else if (stage == 3)
+        {
+
+            //placeItem 사용하여 아이템 배치 
+            PlaceItem(7, 1, 3);
+            PlaceItem(9, 1, 1);
+            PlaceItem(3, 2, 2);
+            PlaceItem(1, 3, 4);
+            PlaceItem(5, 4, 3);
+            PlaceItem(9, 5, 1);
+            PlaceItem(6, 5, 4);
+            PlaceItem(3, 7, 1);
+            PlaceItem(4, 7, 2);
+            PlaceItem(8, 8, 2);
+            PlaceItem(2, 9, 2);
+            PlaceItem(5, 9, 4);
+            
+
+            // Clear Tile 관련 세팅 예제
+            SetClearTile(2, 2);
+            SetClearTile(8, 2);
+            SetClearTile(2, 8);
+
+            SetMoveTile(3, 3, 2, 'Y');
+            SetMoveTile(7, 6, -4, 'X');
+            SetMoveTile(1, 8, -3, 'Y');
+
+        }
+
+        else if (stage == 4)
+        {
+
+            //placeItem 사용하여 아이템 배치 
+            PlaceItem(3, 1, 4);
+            PlaceItem(9, 1, 4);
+            PlaceItem(2, 2, 1);
+            PlaceItem(5, 2, 3);
+            PlaceItem(1, 3, 2);
+            PlaceItem(8, 3, 1);
+            PlaceItem(3, 4, 3);
+            PlaceItem(6, 4, 1);
+            PlaceItem(4, 6, 3);
+            PlaceItem(1, 7, 2);
+            PlaceItem(7, 7, 2);
+            PlaceItem(6, 8, 3);
+            PlaceItem(3, 9, 2);
+            PlaceItem(8, 9, 3);
+
+
+            // Clear Tile 관련 세팅 예제
+            SetClearTile(3, 2);
+            SetClearTile(7, 6);
+            SetClearTile(2, 8);
+
+            SetMoveTile(9, 3, 2, 'Y');
+            
+        }
+
         //SoundController.Instance.BGM(true);  배경 사운드 끄기 예제
 
 

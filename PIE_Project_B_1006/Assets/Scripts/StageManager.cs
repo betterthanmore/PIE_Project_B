@@ -14,8 +14,8 @@ public class StageManager : MonoBehaviour
         {
             gm.StageSetting(1, 40, 5, 3);
             gm.StageSetting(2, 40, 5, 3);
-            gm.StageSetting(3, 40, 5, 3);
-            gm.StageSetting(4, 40, 5, 3);
+            gm.StageSetting(3, 43, 5, 3);
+            gm.StageSetting(4, 47, 5, 3);
             gm.StageSetting(5, 40, 5, 3);
         }
         else
