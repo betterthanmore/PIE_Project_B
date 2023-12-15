@@ -92,13 +92,14 @@ public class GameController : MonoBehaviour
 
             // Clear Tile 관련 세팅 예제
             SetClearTile(3, 4);
-            SetClearTile(3, 7);
+            SetClearTile(2 ,8);
             SetClearTile(7, 8);
 
             SetMoveTile(6, 3, 3, 'Y');
             SetMoveTile(1, 6, -3, 'Y');
             SetMoveTile(4, 5, 2, 'X');
             
+
         }
 
         else if (stage == 3)
@@ -249,7 +250,7 @@ public class GameController : MonoBehaviour
                                 if (slot.xOry == 1)
                                 {
                                     int _x = slot.x + slot.moveAmount;
-                                    UseMoveTile(_x, slot.y, slot.id);
+                                    UseMoveTile(_x, slot.y, carryingItem.itemId );
                                 }
                                 else if (slot.xOry == 2)
                                 {
